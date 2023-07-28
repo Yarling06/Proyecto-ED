@@ -2,7 +2,6 @@
 package proyecto.ed;
 
 
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,18 +10,18 @@ public class Juego {
     private int puntajeFinal;
     private int tiempoRestante;
     private ArrayList<Orden> ordenes;
-    private ArrayList<Ingrediente> cintaTransportadora;
+    private Nodo<Ingrediente> cintaTransportadoraInicio;
+    private Nodo<Ingrediente> ultimoIngredienteCinta;
 
-    public void Juego() {
+    public Juego() {
         puntajeFinal = 0;
-        tiempoRestante = 300; 
+        tiempoRestante = 300; // 5 minutos 
         ordenes = new ArrayList<>();
-        cintaTransportadora = new ArrayList<>();
+        cintaTransportadoraInicio = null;
+        ultimoIngredienteCinta = null;
     }
 
     public void iniciarJuego() {
-        // falta implementar contenido del metodo
-        
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -33,33 +32,40 @@ public class Juego {
     }
 
     public void recibirOrden() {
-        // falta implementar contenido
-    }
+  // implementar logica para recibir orden
+        }
+    
 
     public void tomarIngrediente() {
-         // falta implementar contenido
+        if (cintaTransportadoraInicio != null) {
+            Ingrediente ingredienteTomado = cintaTransportadoraInicio.getDato();
+            cintaTransportadoraInicio = cintaTransportadoraInicio.getSiguiente();
+            ultimoIngredienteCinta = ultimoIngredienteCinta.getSiguiente();
+            
+            // Verifica si la orden se completó con el ingrediente tomado
+            verificarOrdenesCompletas(ingredienteTomado);
+        }
     }
 
-    public void tirarIngrediente() {
-      // falta implementar contenido
-    }
-
-    public void actualizarCintaTransportadora() {
-             // falta implementar contenido
-    }
-
-    public void verificarOrdenesCompletas() {
-            // falta implementar contenido
+    public void verificarOrdenesCompletas(Ingrediente ingredienteTomado) {
+        for (Orden orden : ordenes) {
+            if (!orden.verificarOrden(cintaTransportadoraInicio)) {
+                // Si la orden no está completa, no realiza ninguna acción
+                continue;
+            }
+            
+            // y si esta completa entonces suma los puntos finales
+        }
     }
 
     public int calcularPuntaje() {
-              // falta implementar contenido
-        return puntajeFinal;
+           return puntajeFinal;
     }
 
     public void mostrarResultado() {
-             // falta implementar contenido
+   
+        System.out.println("¡Tiempo terminado! Puntaje final: " + puntajeFinal);
     }
-}
 
 
+    }
