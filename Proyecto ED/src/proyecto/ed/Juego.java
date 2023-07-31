@@ -1,8 +1,5 @@
-
 package proyecto.ed;
 
-
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,14 +7,14 @@ import java.util.TimerTask;
 public class Juego {
     private int puntajeFinal;
     private int tiempoRestante;
-    private ArrayList<Orden> ordenes;
+    private Orden [] ordenes;
     private Nodo<Ingrediente> cintaTransportadoraInicio;
     private Nodo<Ingrediente> ultimoIngredienteCinta;
 
     public Juego() {
         puntajeFinal = 0;
         tiempoRestante = 300; // osea 5 minutos
-        ordenes = new ArrayList<>();
+        ordenes = new Orden[3];
         cintaTransportadoraInicio = null;
         ultimoIngredienteCinta = null;
     }
@@ -36,10 +33,10 @@ public class Juego {
     }
 
     public void recibirOrden() {
-        if (ordenes.size() < 3) {
+        if (ordenes[0] == null || ordenes[1] == null || ordenes[2] == null) {
             Random random = new Random();
-            int tipoOrden = random.nextInt(3); // Genera un número 
-            // aleatorio entre 0 y 2
+            int tipoOrden = random.nextInt(3); //genera un numero entre 1
+            //y 3
 
             String tipo;
 
@@ -57,15 +54,20 @@ public class Juego {
                     tipo = "Hamburguesa de carne";
                     break;
             }
-
             Orden orden = new Orden(tipo);
-            ordenes.add(orden);
-            System.out.println("Nueva orden recibida: " + tipo + ". Tiempo restante: " + tiempoRestante);
+            for (int i = 0; i < 3; i++) {
+                if (ordenes[i] == null) {
+                    ordenes[i] = orden;
+                    break;
+                }
+            }
+            System.out.println("Nueva orden generada: " + tipo + ". Tiempo restante: " + tiempoRestante);
         } else {
-            System.out.println("No se puede generar una nueva orden, ya hay 3 órdenes en proceso.");
+            System.out.println("No se puede generar una nueva orden, ya hay 3 órdenes solicitadas.");
         }
-        
-        }
+    }
+
+            
      public void tomarIngrediente() {
     }
 
