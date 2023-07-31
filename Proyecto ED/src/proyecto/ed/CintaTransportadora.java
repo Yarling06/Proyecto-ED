@@ -1,24 +1,70 @@
 package proyecto.ed;
 
-import java.util.ArrayList;
-
 public class CintaTransportadora {
-    private ArrayList<Ingrediente> ingredientesEnCinta;
+    private Ingrediente[] ingredientesEnCinta;
+    private int capacidad;
+    private int cantidadIngredientes;
 
-    public CintaTransportadora() {
-        ingredientesEnCinta = new ArrayList<>();
+    public CintaTransportadora(int capacidad) {
+        this.capacidad = capacidad;
+        this.ingredientesEnCinta = new Ingrediente[capacidad];
+        this.cantidadIngredientes = 0;
     }
 
     public void agregarIngrediente(Ingrediente ingrediente) {
-        ingredientesEnCinta.add(ingrediente);
+        if (cantidadIngredientes < capacidad) {
+            ingredientesEnCinta[cantidadIngredientes] = ingrediente;
+            cantidadIngredientes++;
+        }
     }
 
     public void moverCinta() {
-        Ingrediente ultimoIngrediente = ingredientesEnCinta.remove(ingredientesEnCinta.size() - 1);
-        ingredientesEnCinta.add(0, ultimoIngrediente);
+        if (cantidadIngredientes > 1) {
+            Ingrediente primero = ingredientesEnCinta[0];
+            for (int i = 0; i < cantidadIngredientes - 1; i++) {
+                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
+            }
+            ingredientesEnCinta[cantidadIngredientes - 1] = primero;
+        }
+    }
+    
+    public boolean contieneIngrediente (Ingrediente ingrediente){
+        for (int i=0;i< cantidadIngredientes; i++){
+            if(ingredientesEnCinta[i] == ingrediente){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public ArrayList<Ingrediente> getIngredientesEnCinta() {
-        return ingredientesEnCinta;
+    public Ingrediente tomarIngrediente() {
+        if (cantidadIngredientes > 0) {
+            Ingrediente ingredienteTomado = ingredientesEnCinta[0];
+            for (int i = 0; i < cantidadIngredientes - 1; i++) {
+                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
+            }
+            ingredientesEnCinta[cantidadIngredientes - 1] = null;
+            cantidadIngredientes--;
+            return ingredienteTomado;
+        } else {
+            return null;
+        }
+    }
+
+    public void tirarIngrediente() {
+        if (cantidadIngredientes > 0) {
+            for (int i = 0; i < cantidadIngredientes - 1; i++) {
+                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
+            }
+            ingredientesEnCinta[cantidadIngredientes - 1] = null;
+            cantidadIngredientes--;
+        }
+    }
+
+    public int getCantidadIngredientesEnCinta() {
+        return cantidadIngredientes;
     }
 }
+
+
+
