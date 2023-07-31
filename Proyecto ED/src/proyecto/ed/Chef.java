@@ -12,7 +12,7 @@ public class Chef {
     }
 
     public void prepararOrden(Orden orden) {
-      if (orden.isCompletada()){
+      if (orden.Completada()){
           int puntajeOrden = calcularPuntajeOrden(orden);
           puntajeFinal+=puntajeOrden;
           System.out.println(nombre+"preparo la orden"+orden.getTipo()+
@@ -21,8 +21,7 @@ public class Chef {
           System.out.println("La orden"+orden.getTipo()+ "se encuentra incompleta");
       }
     }
-    
-    
+       
     private int calcularPuntajeOrden(Orden orden) {
         int puntaje = 0;
         switch (orden.getTipo()) {
