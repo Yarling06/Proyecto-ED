@@ -154,8 +154,4 @@ public void jugar() {
         System.out.println("¡Tiempo agotado! Puntaje total: " + puntajeFinal);
     }
 
-    public static void main(String[] args) {
-        Juego juego = new Juego();
-        juego.jugar();
-    }
 }
