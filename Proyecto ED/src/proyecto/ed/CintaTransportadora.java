@@ -1,37 +1,48 @@
-package proyecto.ed;
 
+package proyecto.ed;
 public class CintaTransportadora {
-    private Ingrediente[] ingredientesEnCinta;
+
+    private Nodo<Ingrediente> inicio;
     private int capacidad;
     private int cantidadIngredientes;
 
     public CintaTransportadora(int capacidad) {
         this.capacidad = capacidad;
-        this.ingredientesEnCinta = new Ingrediente[capacidad];
         this.cantidadIngredientes = 0;
     }
 
     public void agregarIngrediente(Ingrediente ingrediente) {
         if (cantidadIngredientes < capacidad) {
-            ingredientesEnCinta[cantidadIngredientes] = ingrediente;
+            Nodo<Ingrediente> nuevoNodo = new Nodo<>(ingrediente);
+            if (inicio == null) {
+                inicio = nuevoNodo;
+                inicio.setSiguiente(inicio);
+            } else {
+                Nodo<Ingrediente> ultimo = inicio;
+                while (ultimo.getSiguiente() != inicio) {
+                    ultimo = ultimo.getSiguiente();
+                }
+                ultimo.setSiguiente(nuevoNodo);
+                nuevoNodo.setSiguiente(inicio);
+            }
             cantidadIngredientes++;
         }
     }
 
     public void moverCinta() {
         if (cantidadIngredientes > 1) {
-            Ingrediente primero = ingredientesEnCinta[0];
-            for (int i = 0; i < cantidadIngredientes - 1; i++) {
-                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
-            }
-            ingredientesEnCinta[cantidadIngredientes - 1] = primero;
+            inicio = inicio.getSiguiente();
         }
     }
-    
-    public boolean contieneIngrediente (Ingrediente ingrediente){
-        for (int i=0;i< cantidadIngredientes; i++){
-            if(ingredientesEnCinta[i] == ingrediente){
-                return true;
+
+    public boolean contieneIngrediente(Ingrediente ingrediente) {
+        if (cantidadIngredientes > 0) {
+            Nodo<Ingrediente> actual = inicio;
+            for (int i = 0; i < cantidadIngredientes; i++) {
+                if (actual.getValor().equals(ingrediente)) {
+                    return true;
+                }
+                actual = actual.getSiguiente();
             }
         }
         return false;
@@ -39,13 +50,10 @@ public class CintaTransportadora {
 
     public Ingrediente tomarIngrediente() {
         if (cantidadIngredientes > 0) {
-            Ingrediente ingredienteTomado = ingredientesEnCinta[0];
-            for (int i = 0; i < cantidadIngredientes - 1; i++) {
-                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
-            }
-            ingredientesEnCinta[cantidadIngredientes - 1] = null;
+            Nodo<Ingrediente> nodoTomado = inicio;
+            inicio = inicio.getSiguiente();
             cantidadIngredientes--;
-            return ingredienteTomado;
+            return nodoTomado.getValor();
         } else {
             return null;
         }
@@ -53,10 +61,7 @@ public class CintaTransportadora {
 
     public void tirarIngrediente() {
         if (cantidadIngredientes > 0) {
-            for (int i = 0; i < cantidadIngredientes - 1; i++) {
-                ingredientesEnCinta[i] = ingredientesEnCinta[i + 1];
-            }
-            ingredientesEnCinta[cantidadIngredientes - 1] = null;
+            inicio = inicio.getSiguiente();
             cantidadIngredientes--;
         }
     }
@@ -65,6 +70,3 @@ public class CintaTransportadora {
         return cantidadIngredientes;
     }
 }
-
-
-

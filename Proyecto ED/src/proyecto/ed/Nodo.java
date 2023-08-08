@@ -1,23 +1,20 @@
-
 package proyecto.ed;
 
- class Nodo<T> {
-        private T dato;
-        private Nodo<T> siguiente;
-        private Nodo<T> anterior;
+public class Nodo<T> {
+    private T valor;
+    private Nodo<T> siguiente;
 
-        public Nodo(T dato) {
-            this.dato = dato;
-            this.siguiente = null;
-            this.anterior = null;
-        }
-
-    public T getDato() {
-        return dato;
+    public Nodo(T valor) {
+        this.valor = valor;
+        this.siguiente = null;
     }
 
-    public void setDato(T dato) {
-        this.dato = dato;
+    public T getValor() {
+        return valor;
+    }
+
+    public void setValor(T valor) {
+        this.valor = valor;
     }
 
     public Nodo<T> getSiguiente() {
@@ -27,15 +24,4 @@ package proyecto.ed;
     public void setSiguiente(Nodo<T> siguiente) {
         this.siguiente = siguiente;
     }
-
-    public Nodo<T> getAnterior() {
-        return anterior;
-    }
-
-    public void setAnterior(Nodo<T> anterior) {
-        this.anterior = anterior;
-    }
-
-        
-    }
-
+}
