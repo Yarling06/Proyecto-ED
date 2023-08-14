@@ -1,27 +1,29 @@
 package proyecto.ed;
-import proyecto.ed.CintaTransportadora;
-import proyecto.ed.Ingrediente;
+
+import java.util.Stack;
 
 public class Chef {
+  public Stack<Hamburguesa> hamburguesasEnProceso;
 
-    private String nombre;
-
-    public Chef(String nombre) {
-        this.nombre = nombre;
+    public Chef() {
+        this.hamburguesasEnProceso = new Stack<>();
     }
 
-    public void tomarIngrediente(CintaTransportadora cintaTransportadora) {
-        Ingrediente ingredienteTomado = cintaTransportadora.tomarIngrediente();
-        if (ingredienteTomado != null) {
-            System.out.println(nombre + " ha tomado un " + ingredienteTomado.getTipo() + " de la cinta.");
-        } else {
-            System.out.println("La cinta transportadora está vacía, no se pudo tomar ningún ingrediente.");
+    public void prepararHamburguesa(Hamburguesa hamburguesa) {
+        hamburguesasEnProceso.push(hamburguesa);
+    }
+       public Hamburguesa completarHamburguesa() {
+        return hamburguesasEnProceso.pop();
+    }
+
+    public void agregarIngrediente(Ingrediente ingrediente) {
+        if (!hamburguesasEnProceso.isEmpty()) {
+            hamburguesasEnProceso.peek().getIngredientes().add(ingrediente);
         }
     }
-
-    public void tirarIngrediente(CintaTransportadora cintaTransportadora) {
-        cintaTransportadora.tirarIngrediente();
-        System.out.println(nombre + " ha tirado un ingrediente a la basura.");
+        public void desecharHamburguesa() {
+        if (!hamburguesasEnProceso.isEmpty()) {
+            hamburguesasEnProceso.pop();
+        }
     }
 }
-
