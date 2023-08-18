@@ -1,32 +1,62 @@
-
 package proyecto.ed;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Hamburguesa {
-    private String nombre;
+
+    private String tipo;
     private List<Ingrediente> ingredientes;
+    private int cantidadIngredientes;
 
-    public Hamburguesa(String nombre, List<Ingrediente> ingredientes) {
-        this.nombre = nombre;
-        this.ingredientes = ingredientes;
+    public Hamburguesa(String tipo) {
+        this.tipo = tipo;
+        this.ingredientes = new LinkedList<>();
+        this.cantidadIngredientes = 0;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void agregarIngrediente(Ingrediente ingrediente) {
+        if (cantidadIngredientes < getMaximoIngredientes()) {
+            ingredientes.add(ingrediente);
+            cantidadIngredientes++;
+        } else {
+            System.out.println("La hamburguesa está completa, no se pueden agregar más ingredientes.");
+        }
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
     public List<Ingrediente> getIngredientes() {
         return ingredientes;
     }
 
-    public int calcularPuntaje() {
-        if (nombre.equals("Hamburguesa de carne")) {
+    public int getPuntos() {
+        if (tipo.equals("Hamburguesa de carne")) {
             return 5;
-        } else if (nombre.equals("Hamburguesa con queso")) {
+        } else if (tipo.equals("Hamburguesa con queso")) {
             return 10;
-        } else if (nombre.equals("Hamburguesa clásica")) {
+        } else if (tipo.equals("Hamburguesa clásica")) {
             return 15;
+        } else {
+            return 0;
         }
-        return 0;
+    }
+
+    public boolean estaCompleta() {
+        return cantidadIngredientes == getMaximoIngredientes();
+    }
+
+    private int getMaximoIngredientes() {
+        if (tipo.equals("Hamburguesa de carne")) {
+            return 2;
+        } else if (tipo.equals("Hamburguesa con queso")) {
+            return 3;
+        } else if (tipo.equals("Hamburguesa clásica")) {
+            return 4;
+        } else {
+            return 0;
+        }
     }
 }

@@ -1,398 +1,262 @@
 package proyecto.ed;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
-public class GameFrame extends javax.swing.JFrame {
+public class GameFrame extends JFrame {
 
-    private Chef chef;
-    private CintaTransportadora cinta;
-    private int puntajeTotal = 0;
+    private JPanel gamePanel;
+    private JLabel orderLabel;
+    private JLabel timeLabel;
+    private JLabel scoreLabel;
     private Timer timer;
+    private JButton[] ingredientButtons;
+    private JButton trashButton;
+    private Chef chef;
 
-    private int tiempoRestante = 300;
+    private int timeRemaining = 5 * 60; // Tiempo en segundos (5 minutos)
+    private Queue<OrdenHamburguesa> ordenesPendientes;
+    private LinkedList<Ingrediente> cintaTransportadora;
+
+    private String[] tiposHamburguesa = {
+        "Hamburguesa de carne",
+        "Hamburguesa con queso",
+        "Hamburguesa clásica"
+    };
+    private int[] puntosHamburguesa = {5, 10, 15};
 
     public GameFrame() {
+        setTitle("Overcooked Game");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+
         initComponents();
+        initTimer();
+        addComponentsToFrame();
+
+        ordenesPendientes = new LinkedList<>();
+        cintaTransportadora = new LinkedList<>();
         chef = new Chef();
-        List<Ingrediente> ingredientesCinta = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            ingredientesCinta.add(new Ingrediente("Ingrediente " + (i + 1), "Tipo"));
-        }
-        cinta = new CintaTransportadora(ingredientesCinta);
-        actualizarCintaLabel(ingredientesCinta);
-      
-           
-            timer = new Timer(1000, e -> actualizarTiempo());
 
-            timer.start(); // Inicia el timer
-        }
+        startGameLoop();
+    }
 
-        @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        gamePanel = new JPanel();
+        gamePanel.setLayout(null);
 
-        fondoPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        puntajeLabel = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        tiempoLabel = new javax.swing.JLabel();
-        imagenLabel = new javax.swing.JLabel();
-        lechugaButton = new javax.swing.JButton();
-        quesoButton = new javax.swing.JButton();
-        carneButton = new javax.swing.JButton();
-        panButton = new javax.swing.JButton();
-        completarButton = new javax.swing.JButton();
-        moverCintaButton = new javax.swing.JButton();
-        cintaLabel = new javax.swing.JLabel();
-        desecharButton = new javax.swing.JButton();
+        orderLabel = new JLabel("Órdenes pendientes:");
+        timeLabel = new JLabel("Tiempo restante: " + calcularMinutos() + " min " + calcularSegundos() + " seg");
+        scoreLabel = new JLabel("Puntaje: 0");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(153, 255, 153));
+        orderLabel.setBounds(10, 10, 300, 30);
+        timeLabel.setBounds(10, 40, 300, 30);
+        scoreLabel.setBounds(10, 70, 300, 30);
 
-        fondoPanel.setBackground(new java.awt.Color(204, 255, 204));
+        gamePanel.add(orderLabel);
+        gamePanel.add(timeLabel);
+        gamePanel.add(scoreLabel);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("OverCooked-Fide");
-
-        puntajeLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        puntajeLabel.setText("Puntaje: ");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(puntajeLabel)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(puntajeLabel)
-                .addContainerGap())
-        );
-
-        tiempoLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tiempoLabel.setText("Tiempo:");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tiempoLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tiempoLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        imagenLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/ed/imagenes/overcooked.jpg"))); // NOI18N
-
-        javax.swing.GroupLayout fondoPanelLayout = new javax.swing.GroupLayout(fondoPanel);
-        fondoPanel.setLayout(fondoPanelLayout);
-        fondoPanelLayout.setHorizontalGroup(
-            fondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoPanelLayout.createSequentialGroup()
-                .addGroup(fondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(fondoPanelLayout.createSequentialGroup()
-                        .addGap(167, 167, 167)
-                        .addComponent(jLabel2))
-                    .addGroup(fondoPanelLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(223, 223, 223)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(fondoPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(imagenLabel)))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        fondoPanelLayout.setVerticalGroup(
-            fondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoPanelLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(imagenLabel)
-                .addContainerGap(33, Short.MAX_VALUE))
-        );
-
-        lechugaButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/ed/imagenes/lechuga.jpg"))); // NOI18N
-        lechugaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lechugaButtonActionPerformed(evt);
+        JButton deliverButton = new JButton("Entregar Hamburguesa");
+        deliverButton.setBounds(10, 430, 150, 30);
+        deliverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                entregarHamburguesa();
             }
         });
+        gamePanel.add(deliverButton);
 
-        quesoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/ed/imagenes/queso.jpg"))); // NOI18N
-        quesoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quesoButtonActionPerformed(evt);
-            }
-        });
-
-        carneButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/ed/imagenes/hamburguesa.jpg"))); // NOI18N
-        carneButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                carneButtonActionPerformed(evt);
-            }
-        });
-
-        panButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/ed/imagenes/bollo.jpg"))); // NOI18N
-        panButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panButtonActionPerformed(evt);
-            }
-        });
-
-        completarButton.setText("Completar hamburguesa");
-        completarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                completarButtonActionPerformed(evt);
-            }
-        });
-
-        moverCintaButton.setText("Mover cinta");
-        moverCintaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moverCintaButtonActionPerformed(evt);
-            }
-        });
-
-        cintaLabel.setText("*cinta transportadora*");
-
-        desecharButton.setText("Desechar ingrediente");
-        desecharButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                desecharButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fondoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cintaLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(panButton)
-                                    .addComponent(carneButton)
-                                    .addComponent(quesoButton)
-                                    .addComponent(lechugaButton)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(moverCintaButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(desecharButton)))
-                        .addGap(21, 21, 21))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(completarButton)
-                        .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(fondoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(panButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(carneButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(quesoButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(lechugaButton)
-                        .addGap(37, 37, 37)
-                        .addComponent(moverCintaButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(desecharButton)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cintaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(completarButton)))
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void completarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completarButtonActionPerformed
-        if (!chef.hamburguesasEnProceso.isEmpty()) {
-            Hamburguesa hamburguesaActual = chef.hamburguesasEnProceso.peek();
-            List<Ingrediente> ingredientesEnHamburguesa = hamburguesaActual.getIngredientes();
-
-            boolean esCorrecta = verificarHamburguesa(ingredientesEnHamburguesa, hamburguesaActual.getNombre());
-
-            if (esCorrecta) {
-                int puntaje = hamburguesaActual.calcularPuntaje();
-                chef.hamburguesasEnProceso.pop();
-                puntajeTotal += puntaje;
-                puntajeLabel.setText("Puntaje: " + puntajeTotal);
-                actualizarTiempo();
-            } else {
-                // Aquí puedes mostrar un mensaje de error o realizar alguna otra acción
-            }
+        ingredientButtons = new JButton[4];
+        String[] ingredientNames = {"Pan", "Carne", "Queso", "Lechuga"};
+        for (int i = 0; i < ingredientButtons.length; i++) {
+            ingredientButtons[i] = new JButton(ingredientNames[i]);
+            ingredientButtons[i].setBounds(10 + i * 90, 400, 80, 30);
+            int finalI = i;
+            ingredientButtons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    agregarIngrediente(new Ingrediente(ingredientNames[finalI], ingredientNames[finalI]));
+                }
+            });
+            gamePanel.add(ingredientButtons[i]);
         }
 
+        // Botón de basurero
+        trashButton = new JButton("Tirar");
+        trashButton.setBounds(10 + ingredientButtons.length * 90, 400, 80, 30);
+        trashButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                desecharIngrediente();
+            }
+        });
+        gamePanel.add(trashButton);
     }
 
-    private boolean verificarHamburguesa(List<Ingrediente> ingredientes, String tipoHamburguesa) {
-        // Aquí defines las recetas correctas para cada tipo de hamburguesa
-        List<String> recetaHamburguesaCarne = Arrays.asList("Pan", "Carne");
-        List<String> recetaHamburguesaConQueso = Arrays.asList("Pan", "Carne", "Queso");
-        List<String> recetaHamburguesaClasica = Arrays.asList("Pan", "Carne", "Queso", "Lechuga");
-
-        List<String> ingredientesEnHamburguesa = new ArrayList<>();
-        for (Ingrediente ingrediente : ingredientes) {
-            ingredientesEnHamburguesa.add(ingrediente.getNombre());
-        }
-        List<String> recetaCorrecta;
-        if (tipoHamburguesa.equals("Hamburguesa de carne")) {
-            recetaCorrecta = recetaHamburguesaCarne;
-        } else if (tipoHamburguesa.equals("Hamburguesa con queso")) {
-            recetaCorrecta = recetaHamburguesaConQueso;
-        } else if (tipoHamburguesa.equals("Hamburguesa clásica")) {
-            recetaCorrecta = recetaHamburguesaClasica;
-        } else {
-            return false; // Tipo de hamburguesa no reconocido
-        }
-        return ingredientesEnHamburguesa.equals(recetaCorrecta);
-    }//GEN-LAST:event_completarButtonActionPerformed
-
-    private void panButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panButtonActionPerformed
-        if (!chef.hamburguesasEnProceso.isEmpty()) {
-            Ingrediente pan = cinta.tomarIngrediente();
-            chef.agregarIngrediente(pan);
-        }
-    }//GEN-LAST:event_panButtonActionPerformed
-
-    private void carneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carneButtonActionPerformed
-        if (!chef.hamburguesasEnProceso.isEmpty()) {
-            Ingrediente carne = cinta.tomarIngrediente();
-            chef.agregarIngrediente(carne);
-        }
-    }//GEN-LAST:event_carneButtonActionPerformed
-
-    private void quesoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quesoButtonActionPerformed
-        if (!chef.hamburguesasEnProceso.isEmpty()) {
-            Ingrediente queso = cinta.tomarIngrediente();
-            chef.agregarIngrediente(queso);
-        }
-    }//GEN-LAST:event_quesoButtonActionPerformed
-
-    private void lechugaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lechugaButtonActionPerformed
-        if (!chef.hamburguesasEnProceso.isEmpty()) {
-            Ingrediente lechuga = cinta.tomarIngrediente();
-            chef.agregarIngrediente(lechuga);
-        }
-    }//GEN-LAST:event_lechugaButtonActionPerformed
-
-    private void moverCintaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moverCintaButtonActionPerformed
-        cinta.moverCinta();
-        List<Ingrediente> ingredientesEnCinta = cinta.getIngredientesEnCinta();
-        actualizarCintaLabel(ingredientesEnCinta);
-    }//GEN-LAST:event_moverCintaButtonActionPerformed
-
-    private void desecharButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desecharButtonActionPerformed
-        chef.desecharHamburguesa();
-    }//GEN-LAST:event_desecharButtonActionPerformed
-    private void actualizarCintaLabel(List<Ingrediente> ingredientesEnCinta) {
-        StringBuilder cintaText = new StringBuilder("Cinta:\n");
-        for (Ingrediente ingrediente : ingredientesEnCinta) {
-            if (ingrediente != null) {
-                cintaText.append(ingrediente.getNombre()).append("\n");
-            } else {
-                cintaText.append("Vacío\n");
+    private void initTimer() {
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeRemaining--;
+                timeLabel.setText("Tiempo restante: " + calcularMinutos() + " min " + calcularSegundos() + " seg");
+                actualizarInterfaz();
             }
-        }
-        cintaLabel.setText(cintaText.toString());
-        puntajeLabel.setText("Puntaje: " + puntajeTotal);
+        });
+        timer.start();
     }
 
-    private void actualizarTiempo() {
-        tiempoRestante--;
-        if (tiempoRestante >= 0) {
-            int minutos = tiempoRestante / 60;
-            int segundos = tiempoRestante % 60;
-            tiempoLabel.setText("Tiempo: " + minutos + ":" + String.format("%02d", segundos));
-        } else {
-            // Aquí puedes detener el juego o realizar alguna acción cuando se acabe el tiempo
-        }
+    private void addComponentsToFrame() {
+        getContentPane().add(gamePanel, BorderLayout.CENTER);
     }
 
+    private void startGameLoop() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    // Generar órdenes aleatorias cada 20 segundos
+                    if (timer.getDelay() * (300 - timeRemaining) % 20000 == 0) {
+                        generarOrdenAleatoria();
+                    }
 
+                    // Mover cinta transportadora
+                    moverCinta();
 
-    public static void main(String args[]) {
+                    // Actualizar la interfaz con los ingredientes y órdenes
+                    actualizarInterfaz();
 
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+                    try {
+                        Thread.sleep(1000); // Esperar 1 segundo antes de la siguiente iteración
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        }).start();
+    }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    private void generarOrdenAleatoria() {
+        Random random = new Random();
+        if (ordenesPendientes.size() < 3) {
+            int tipoOrdenIdx = random.nextInt(3);
+            String tipoOrden = tiposHamburguesa[tipoOrdenIdx];
+            int puntos = puntosHamburguesa[tipoOrdenIdx];
+            OrdenHamburguesa orden = new OrdenHamburguesa(tipoOrden, puntos);
+            ordenesPendientes.add(orden);
+        }
+    }
+
+    private void entregarHamburguesa() {
+        if (chef.hamburguesaCompleta()) {
+            int puntosGanados = chef.obtenerHamburguesaEnProceso().getPuntos();
+            chef.sumarPuntaje(puntosGanados);
+            scoreLabel.setText("Puntaje: " + chef.getPuntaje());
+            chef.completarHamburguesa(); // Limpiamos la hamburguesa en proceso
+            actualizarInterfaz();
+        } else {
+            System.out.println("La hamburguesa no está completa aún.");
+        }
+    }
+
+    private void moverCinta() {
+        if (cintaTransportadora.size() < 5) {
+            cintaTransportadora.addFirst(generarIngredienteAleatorio());
+        } else {
+            cintaTransportadora.addFirst(cintaTransportadora.removeLast());
+        }
+    }
+
+    private Ingrediente generarIngredienteAleatorio() {
+        String[] nombresIngredientes = {"Pan", "Carne", "Queso", "Lechuga"};
+        String nombre = nombresIngredientes[new Random().nextInt(nombresIngredientes.length)];
+        return new Ingrediente(nombre.toLowerCase(), nombre);
+    }
+
+    private void agregarIngrediente(Ingrediente ingrediente) {
+        if (chef.tieneHamburguesaEnProceso()) {
+            chef.agregarIngrediente(ingrediente);
+            if (chef.hamburguesaCompleta()) {
+                int puntosGanados = chef.obtenerHamburguesaEnProceso().getPuntos();
+                chef.sumarPuntaje(puntosGanados);
+                scoreLabel.setText("Puntaje: " + chef.getPuntaje());
+            }
+        }
+    }
+
+    private void desecharIngrediente() {
+        if (!cintaTransportadora.isEmpty()) {
+            cintaTransportadora.removeFirst();
+        }
+    }
+
+    private int calcularMinutos() {
+        return timeRemaining / 60;
+    }
+
+    private int calcularSegundos() {
+        return timeRemaining % 60;
+    }
+
+private void actualizarInterfaz() {
+    // Limpia el panel del juego antes de repintar
+    gamePanel.removeAll();
+
+    // Dibuja las órdenes pendientes
+    int posY = 80;
+    for (OrdenHamburguesa orden : ordenesPendientes) {
+        JLabel orderTextLabel = new JLabel(orden.getTipoHamburguesa());
+        orderTextLabel.setBounds(10, posY, 300, 30);
+        gamePanel.add(orderTextLabel);
+        posY += 30;
+    }
+
+    // Dibuja los ingredientes en la cinta transportadora
+    int posX = 10;
+    for (Ingrediente ingrediente : cintaTransportadora) {
+        JButton ingredienteButton = new JButton(ingrediente.getNombre());
+        ingredienteButton.setBounds(posX, 300, 80, 30);
+        gamePanel.add(ingredienteButton);
+        posX += 90;
+    }
+
+    // Dibuja los demás componentes
+    gamePanel.add(orderLabel);
+    gamePanel.add(timeLabel);
+    gamePanel.add(scoreLabel);
+    for (JButton button : ingredientButtons) {
+        gamePanel.add(button);
+    }
+    gamePanel.add(trashButton);
+
+    // Botón para entregar hamburguesa
+    JButton deliverButton = new JButton("Entregar Hamburguesa");
+    deliverButton.setBounds(10, 430, 150, 30);
+    deliverButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            entregarHamburguesa();
+        }
+    });
+    gamePanel.add(deliverButton);
+
+    // Hace un refresh del panel para mostrar los cambios
+    gamePanel.revalidate();
+    gamePanel.repaint();
+}
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GameFrame().setVisible(true);
             }
         });
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton carneButton;
-    private javax.swing.JLabel cintaLabel;
-    private javax.swing.JButton completarButton;
-    private javax.swing.JButton desecharButton;
-    private javax.swing.JPanel fondoPanel;
-    private javax.swing.JLabel imagenLabel;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JButton lechugaButton;
-    private javax.swing.JButton moverCintaButton;
-    private javax.swing.JButton panButton;
-    private javax.swing.JLabel puntajeLabel;
-    private javax.swing.JButton quesoButton;
-    private javax.swing.JLabel tiempoLabel;
-    // End of variables declaration//GEN-END:variables
 }
