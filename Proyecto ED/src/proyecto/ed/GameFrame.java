@@ -19,7 +19,7 @@ public class GameFrame extends JFrame {
     private JButton trashButton;
     private Chef chef;
 
-    private int timeRemaining = 5 * 60; // Tiempo en segundos (5 minutos)
+    private int timeRemaining = 5 * 60; // 5 minutos)
     private Queue<OrdenHamburguesa> ordenesPendientes;
     private LinkedList<Ingrediente> cintaTransportadora;
 
@@ -87,7 +87,7 @@ public class GameFrame extends JFrame {
             gamePanel.add(ingredientButtons[i]);
         }
 
-        // Botón de basurero
+  //este es el boton para eliminar ingrediente
         trashButton = new JButton("Tirar");
         trashButton.setBounds(10 + ingredientButtons.length * 90, 400, 80, 30);
         trashButton.addActionListener(new ActionListener() {
@@ -120,19 +120,19 @@ public class GameFrame extends JFrame {
             @Override
             public void run() {
                 while (true) {
-                    // Generar órdenes aleatorias cada 20 segundos
+                    // con esto se genera una orden cada 20seg
                     if (timer.getDelay() * (300 - timeRemaining) % 20000 == 0) {
                         generarOrdenAleatoria();
                     }
 
-                    // Mover cinta transportadora
+                    // mover cinta
                     moverCinta();
 
-                    // Actualizar la interfaz con los ingredientes y órdenes
+                    // se actualiza la interfaz con los nuevos cambios
                     actualizarInterfaz();
 
                     try {
-                        Thread.sleep(1000); // Esperar 1 segundo antes de la siguiente iteración
+                        Thread.sleep(1000); 
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
@@ -157,7 +157,7 @@ public class GameFrame extends JFrame {
             int puntosGanados = chef.obtenerHamburguesaEnProceso().getPuntos();
             chef.sumarPuntaje(puntosGanados);
             scoreLabel.setText("Puntaje: " + chef.getPuntaje());
-            chef.completarHamburguesa(); // Limpiamos la hamburguesa en proceso
+            chef.completarHamburguesa(); 
             actualizarInterfaz();
         } else {
             System.out.println("La hamburguesa no está completa aún.");
@@ -204,10 +204,10 @@ public class GameFrame extends JFrame {
     }
 
 private void actualizarInterfaz() {
-    // Limpia el panel del juego antes de repintar
+
     gamePanel.removeAll();
 
-    // Dibuja las órdenes pendientes
+    // se muestran las órdenes pendientes
     int posY = 80;
     for (OrdenHamburguesa orden : ordenesPendientes) {
         JLabel orderTextLabel = new JLabel(orden.getTipoHamburguesa());
@@ -216,7 +216,7 @@ private void actualizarInterfaz() {
         posY += 30;
     }
 
-    // Dibuja los ingredientes en la cinta transportadora
+    // muestralos ingredientes en la cinta transportadora
     int posX = 10;
     for (Ingrediente ingrediente : cintaTransportadora) {
         JButton ingredienteButton = new JButton(ingrediente.getNombre());
@@ -225,7 +225,7 @@ private void actualizarInterfaz() {
         posX += 90;
     }
 
-    // Dibuja los demás componentes
+    // para mostar los demas componentes
     gamePanel.add(orderLabel);
     gamePanel.add(timeLabel);
     gamePanel.add(scoreLabel);
