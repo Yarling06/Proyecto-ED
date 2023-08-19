@@ -1,66 +1,55 @@
 package proyecto.ed;
 
-import java.util.Stack;
-
 public class Chef {
-
-    private Stack<Hamburguesa> hamburguesasEnProceso;
+    private Hamburguesa hamburguesaEnProceso;
+    private Pila<Hamburguesa> hamburguesasPreparadas;
     private int puntaje;
 
     public Chef() {
-        hamburguesasEnProceso = new Stack<>();
+        hamburguesasPreparadas = new Pila<>();
         puntaje = 0;
     }
 
     public void prepararHamburguesa(Hamburguesa hamburguesa) {
-        hamburguesasEnProceso.push(hamburguesa);
+        hamburguesaEnProceso = hamburguesa;
     }
 
     public Hamburguesa completarHamburguesa() {
-        if (!hamburguesasEnProceso.isEmpty()) {
-            return hamburguesasEnProceso.pop();
+        if (hamburguesaEnProceso != null) {
+            hamburguesasPreparadas.push(hamburguesaEnProceso);
+            puntaje += hamburguesaEnProceso.getPuntos();
+            Hamburguesa completada = hamburguesaEnProceso;
+            hamburguesaEnProceso = null;
+            return completada;
         }
         return null;
     }
 
     public void agregarIngrediente(Ingrediente ingrediente) {
-        if (!hamburguesasEnProceso.isEmpty()) {
-            Hamburguesa hamburguesaActual = hamburguesasEnProceso.peek();
-            hamburguesaActual.agregarIngrediente(ingrediente);
+        if (hamburguesaEnProceso != null) {
+            hamburguesaEnProceso.agregarIngrediente(ingrediente);
         }
     }
 
     public void desecharHamburguesa() {
-        if (!hamburguesasEnProceso.isEmpty()) {
-            hamburguesasEnProceso.pop();
+        if (hamburguesaEnProceso != null) {
+            hamburguesaEnProceso = null;
         }
     }
 
     public boolean tieneHamburguesaEnProceso() {
-        return !hamburguesasEnProceso.isEmpty();
+        return hamburguesaEnProceso != null;
     }
 
     public boolean hamburguesaCompleta() {
-        if (!hamburguesasEnProceso.isEmpty()) {
-            Hamburguesa hamburguesa = hamburguesasEnProceso.peek();
-            return hamburguesa.estaCompleta();
-        }
-        return false;
+        return hamburguesaEnProceso != null && hamburguesaEnProceso.estaCompleta();
     }
 
     public int getPuntaje() {
         return puntaje;
     }
 
-    public void sumarPuntaje(int puntos) {
-        puntaje += puntos;
-    }
-
     public Hamburguesa obtenerHamburguesaEnProceso() {
-        if (!hamburguesasEnProceso.isEmpty()) {
-            return hamburguesasEnProceso.peek();
-        }
-        return null;
+        return hamburguesaEnProceso;
     }
 }
-

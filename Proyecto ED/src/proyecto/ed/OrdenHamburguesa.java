@@ -1,7 +1,5 @@
 package proyecto.ed;
-
 public class OrdenHamburguesa {
-
     private String tipoHamburguesa;
     private int puntos;
 
@@ -18,3 +16,4 @@ public class OrdenHamburguesa {
         return puntos;
     }
 }
+
