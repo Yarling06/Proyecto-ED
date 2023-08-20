@@ -42,7 +42,8 @@ public class Chef {
     }
 
     public boolean hamburguesaCompleta() {
-        return hamburguesaEnProceso != null && hamburguesaEnProceso.estaCompleta();
+        String[] ingredientesRequeridos = null;
+        return hamburguesaEnProceso != null && hamburguesaEnProceso.estaCompleta(ingredientesRequeridos);
     }
 
     public int getPuntaje() {
