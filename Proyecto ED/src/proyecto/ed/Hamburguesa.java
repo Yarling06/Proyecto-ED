@@ -1,7 +1,10 @@
 package proyecto.ed;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Hamburguesa {
 
@@ -44,10 +47,18 @@ public class Hamburguesa {
         }
     }
 
- public boolean estaCompleta() {
-    return ingredientes.size() == getMaximoIngredientes();
-}
+    public boolean estaCompleta(String[] ingredientesRequeridos) {
+        Set<String> ingredientesFaltantes = new HashSet<>(Arrays.asList
+        (ingredientesRequeridos));
 
+        for (Ingrediente ingrediente : ingredientes) {
+            ingredientesFaltantes.remove(ingrediente.getNombre());
+        }
+
+        return ingredientesFaltantes.isEmpty();
+    }
+
+    
     private int getMaximoIngredientes() {
         if (tipo.equals("Hamburguesa de carne")) {
             return 2;
