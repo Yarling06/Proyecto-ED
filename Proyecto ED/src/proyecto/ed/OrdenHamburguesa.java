@@ -3,38 +3,49 @@ package proyecto.ed;
 import java.util.List;
 
 public class OrdenHamburguesa {
-    private String tipoHamburguesa;
+    private String tipoOrden;
     private int puntos;
     private String[] ingredientes;
 
-    public OrdenHamburguesa(String tipoHamburguesa, int puntos) {
-        this.tipoHamburguesa = tipoHamburguesa;
+    public OrdenHamburguesa(String tipoOrden, int puntos, String[] ingredientes) {
+        this(tipoOrden, puntos);
+    }
+
+    public OrdenHamburguesa(String tipoOrden, int puntos) {
+        this.tipoOrden = tipoOrden;
         this.puntos = puntos;
         this.ingredientes = ingredientes;
     }
 
-    public String getTipoHamburguesa() {
-        return tipoHamburguesa;
+    public String getTipoOrden() {
+        return tipoOrden;
     }
 
     public int getPuntos() {
         return puntos;
     }
 
-    public boolean cumpleConIngredientes(List<Ingrediente> ingredientesHamburguesa) {
-        for (String ingrediente : ingredientes) {
-            boolean encontrado = false;
-            for (Ingrediente ingredienteHamburguesa : ingredientesHamburguesa) {
-                if (ingrediente.equalsIgnoreCase(ingredienteHamburguesa.getNombre())) {
-                    encontrado = true;
-                    break;
-                }
-            }
-            if (!encontrado) {
+    public String[] getIngredientes() {
+        return ingredientes;
+    }
+
+    public boolean cumpleConIngredientes(String[] ingredientesHamburguesa) {
+        if (ingredientes.length != ingredientesHamburguesa.length) {
+            return false;
+        }
+
+        for (int i = 0; i < ingredientes.length; i++) {
+            if (!ingredientes[i].equalsIgnoreCase(ingredientesHamburguesa[i])) {
                 return false;
             }
         }
+
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Orden: " + tipoOrden + ", Puntos: " + puntos;
     }
 }
 
