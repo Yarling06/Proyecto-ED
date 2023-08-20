@@ -36,12 +36,14 @@ public class GameFrame extends JFrame {
         setTitle("Overcooked Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
-
+        generarOrdenes = new GenerarOrdenes();
+        gestorPuntaje = new GestorPuntaje();
+        
         initComponents();
         initGestorTemporizador();
         addComponentsToFrame();
 
-        generarOrdenes = new GenerarOrdenes();
+        
         cintaTransportadora = new Cola<>();
         chef = new Chef();
         gestorTemporizador = new GestorTemporizador(timeRemaining, new ActionListener() {
@@ -139,26 +141,26 @@ public class GameFrame extends JFrame {
     }
 
     private void startGameLoop() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (generarOrdenes.debeGenerarOrden()) {
-                        generarOrdenesPendientes(); 
-                    }
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                if (generarOrdenes.debeGenerarOrden()) {
+                    generarOrdenesPendientes();
+                }
 
-                    moverCinta();
-                    actualizarInterfaz();
+                moverCinta();
+                actualizarInterfaz();
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
             }
-        }).start();
-    }
+        }
+    }).start();
+}
 
     private void generarOrdenesPendientes() {
         Random random = new Random();
