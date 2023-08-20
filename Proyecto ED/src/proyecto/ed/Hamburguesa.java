@@ -44,9 +44,9 @@ public class Hamburguesa {
         }
     }
 
-    public boolean estaCompleta() {
-        return cantidadIngredientes == getMaximoIngredientes();
-    }
+ public boolean estaCompleta() {
+    return ingredientes.size() == getMaximoIngredientes();
+}
 
     private int getMaximoIngredientes() {
         if (tipo.equals("Hamburguesa de carne")) {

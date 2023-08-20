@@ -28,6 +28,12 @@ public class Cola<T> implements Iterable<T> {
         }
         return valorDesencolado;
     }
+public T peek() {
+    if (isEmpty()) {
+        return null;
+    }
+    return inicio.getValor();
+}
 
     public T frente() {
         if (isEmpty()) {

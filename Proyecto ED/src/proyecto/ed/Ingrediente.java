@@ -3,7 +3,7 @@ package proyecto.ed;
 public class Ingrediente {
     private String nombre;
 
-    public Ingrediente(String nombre, String ingredientName1) {
+    public Ingrediente(String nombre) {
         this.nombre = nombre;
     }
 
